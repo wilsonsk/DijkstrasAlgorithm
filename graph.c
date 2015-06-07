@@ -241,8 +241,7 @@ int DFS(Graph* g, Vertex* source, Vertex* destination)
 				for(int i = 0; i < tempVertex->numNeighbors; i++){
 					addFrontCirListDeque(stack, tempVertex->neighbors[i]);
 				}	
-			}
-			else if(tempVertex == destination){
+			}else if(tempVertex == destination){
 				return 1;	
 			}
 		}
@@ -270,5 +269,52 @@ int DFS(Graph* g, Vertex* source, Vertex* destination)
 int BFS(Graph* g, Vertex* source, Vertex* destination)
 {
 	/* FIXME you will write this */
+
+/*	clearVisited(g);
+	cirListDeque* queue = (cirListDeque*)malloc(sizeof(cirListDeque));
+	initCirListDeque(queue);
+	
+	addBackCirListDeque(queue, source);
+	Vertex* tempVertex = NULL;
+	while(!isEmptyCirListDeque(queue)){
+		tempVertex = (Vertex*)frontCirListDeque(queue);
+		removeFrontCirListDeque(queue);
+		if(tempVertex->isVisited != 1){
+			if(tempVertex == destination){
+				return 1;
+			}else if(tempVertex != destination){
+				for(int i = 0; i < tempVertex->numNeighbors; i++){
+					addBackCirListDeque(queue, tempVertex->neighbors[i]);
+				}
+			}
+		}
+	}
 	return 0;
+*/
+
+        clearVisited(g);
+        //Graph* g == container for POTENTIALLY REACHABLE vertices
+        //Stack == container fo KNOWN REACHABLE vertices
+
+	cirListDeque* queue = (cirListDeque*)malloc(sizeof(cirListDeque));
+        initCirListDeque(queue);
+
+        addFrontCirListDeque(queue, source);
+        Vertex* tempVertex = NULL;
+        while(!isEmptyCirListDeque(queue)){
+                tempVertex = (Vertex*)backCirListDeque(queue);
+                removeBackCirListDeque(queue);
+                if(tempVertex->isVisited != 1){
+                        tempVertex->isVisited = 1;
+                        if(tempVertex != destination){
+                                for(int i = 0; i < tempVertex->numNeighbors; i++){
+                                        addFrontCirListDeque(queue, tempVertex->neighbors[i]);
+                                }
+                        }else if(tempVertex == destination){
+                                return 1;
+                        }
+                }
+        }
+        return 0;
+
 }
