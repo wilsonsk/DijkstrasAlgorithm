@@ -223,7 +223,41 @@ int DFSRecursive(Graph* g, Vertex* source, Vertex* destination)
 int DFS(Graph* g, Vertex* source, Vertex* destination)
 {
 	/* FIXME you will write this */
+	clearVisited(g);
+	//Graph* g == container for POTENTIALLY REACHABLE vertices
+	//Stack == container fo KNOWN REACHABLE vertices
+
+	cirListDeque* stack = (cirListDeque*)malloc(sizeof(cirListDeque));
+	initCirListDeque(stack);
+	
+	addFrontCirListDeque(stack, source);
+	Vertex* tempVertex = NULL;
+	while(!isEmptyCirListDeque(stack)){
+		tempVertex = (Vertex*)frontCirListDeque(stack);
+		removeFrontCirListDeque(stack);
+		if(tempVertex->isVisited != 1){
+			tempVertex->isVisited = 1;
+			if(tempVertex != destination){
+				for(int i = 0; i < tempVertex->numNeighbors; i++){
+					addFrontCirListDeque(stack, tempVertex->neighbors[i]);
+				}	
+			}
+			else if(tempVertex == destination){
+				return 1;	
+			}
+		}
+	}		
 	return 0;
+
+/*
+	for(int i = 0; i < reachAbleContainerSize; i++){	
+		if(EQ(destination == reachAble[i])){
+			return 1;
+		}else{
+			return 0;
+		}
+	}
+*/
 }
 
 /* This function should return a boolean (encoded as an int) indicating
